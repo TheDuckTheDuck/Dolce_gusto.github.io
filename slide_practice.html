@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>슬라이드</title>
+    <style>
+        p,label {
+        font: 15px 'Exo 2', sans-serif;
+        }
+ 
+        input {
+        margin: 6px;
+        }
+
+    </style>
+</head>
+<body>
+    <p>Gender:</p>
+    <div>
+    <input type="checkbox" id="male" name="gender" value="male">
+    <label for="male">Male</label>
+    </div>
+    <div>
+    <input type="checkbox" id="female" name="gender" value="female">
+    <label for="female">Female</label>
+    </div>
+    <br>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var checkboxes = document.querySelectorAll('input[type=checkbox][name=gender]');
+    
+            for (var checkbox of checkboxes)
+            {
+                checkbox.addEventListener('change', function(event)
+                {
+                    if (event.target.checked) {
+                        alert(`${event.target.value} is checked`);
+                    }
+                    else {
+                        alert(`${event.target.value} is unchecked`);
+                    }
+                });
+            }
+        }, false);
+    </script>
+</body>
+</html>

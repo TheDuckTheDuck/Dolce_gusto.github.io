@@ -1,0 +1,2534 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>돌체구스토</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            font-family: 'Noto Sans KR', sans-serif;
+            width:100%;
+            overflow-x: hidden;
+        }
+        .container{
+            display: block;
+        }
+        .top{
+            padding-top: 40px;
+            justify-content: space-between;
+            height: 40px;
+            position: absolute;
+            top: 0; right: 15%;
+            display: flex;
+        }
+
+        #choose_cntry{
+            display: none;
+        }
+        .choose_cntry_pointor{
+            cursor: pointer;
+        }
+        .cntry_list_container{
+            display: none;
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+        }
+        .cntry_list{
+            margin-top: 96px;
+            padding: 32px;
+            margin: 0 0 2.5rem;
+            width: 1200px; height: 720px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            align-self: stretch;
+            background-color: white;
+            border: 1px solid #755813;
+            border-radius: 40px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+
+        }
+        .cntry_list::-webkit-scrollbar{
+            width: 16px;
+        }
+
+        .cntry_list::-webkit-scrollbar-thumb{
+            height: 20%;
+            background: #d9d9d9;
+            border-radius: 10px;
+        }
+
+        .cntry_list::-webkit-scrollbar-track{
+            background: rgba(217, 217, 217,0.3);
+            border-radius: 10px;
+        }
+        .cntry_list_title{
+            font-size: 28px;
+            font-weight: bolder;
+            text-align: center;
+            padding-bottom: 36px;
+        }
+        .cntry_list div{
+            
+            display: inline-block;
+            margin-left: 8px;
+        }
+        .cntry_list div p:nth-child(2){
+            color: grey;
+        }
+        .cntry_list img{
+            width: 80px; height: auto;
+        }
+        .cntry_list a{
+            text-align: left;
+            display: flex;
+            text-decoration: none;
+            color: #3E3A32;
+        }
+        .cntry_list table{
+            width: 960px;
+            margin: 0 auto;
+            border-spacing: 48px;
+        }
+        .cntry_list tr{
+            align-items: left;
+        }
+        #choose_cntry:checked ~ .cntry_list_container{
+            display: flex;
+            z-index: 55;
+            justify-content: center;
+            align-items: center;
+        }
+        .top_menu{
+            width: 960px;
+            margin: 0 auto;
+            height: 104px;
+            padding-top: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .main_menu_upper{
+            gap: 56px;
+            display: flex;
+        }
+        .serch{
+            position: relative;
+            display: flex;
+            width: 300px;
+            height: 30px;
+        }
+        .serch input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #3E3A32;
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+        .serch input:focus {
+            outline: none;
+        }
+        .serch_button{
+            position: relative;
+            border: none;
+            background-color: rgba(0,0,0,0);
+            cursor: pointer;
+            width: 30px; height: 30px;
+        }
+        .serch_button > img{
+            position : absolute;
+            width: 25px;
+            top: 5px;
+            right: 0px;
+            margin: 0;
+        }
+
+        .bi_button{
+            z-index: 3;
+            width: 136px;height:136px;
+            border: 8px solid white;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        #main_menu{
+            gap: 56px;
+            display: flex;
+            width: 640px;
+        }
+
+        #main_menu, #sub_menu{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        #main_menu > li{
+            height: 50px;
+            float: left;
+            border: 1px solid rgba(255 255 255 0);
+        }
+        #main_menu > li > a {
+            text-align: center;
+            display: block;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: #3E3A32;
+        }
+        #main_menu > li:hover #sub_menu{
+            z-index: 2;
+            opacity: 1;
+            visibility: visible;
+        }
+        .main_right_menu{
+            display: flex;
+            width: 80px;
+        }
+        .main_right_menu > a{
+            padding: 8px;
+        }
+        #sub_menu{
+            padding-top: 40px;
+            width: 100%; height: 200px;
+            display: flex;
+            left: 0;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            align-self: stretch;
+            background-color: white;
+            border-bottom: 1px solid #755813;
+        }
+        #sub_menu > li{
+            text-align: center;
+            width: 120px;
+            padding: 16px 28px;
+            font-size: small;
+        }
+        #sub_menu > li > a{
+            color: #755813;
+            text-decoration: none;
+        }
+        .Jayoorown_custom{
+            display: flex;
+            width: 800px;
+            margin: 0 auto;
+        }
+        .main_right_menu > a > img{
+            width: 25px; height:25px;
+        }
+        .main_right_menu > a > img{
+            width: 30px; height:30px;
+        }
+        .event{
+            display: block;
+            width: 100%; height: 560px;
+            overflow: hidden;
+            background-image: url(./WS_3000x834.webp);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .event > a{
+            text-decoration: none;
+            color: #3E3A32;
+            width: auto;height: 100%;
+            margin: 0 auto;
+            display: block;
+            align-items: center;
+        }
+        .event > a > div{
+            position: relative;
+            width: 1080px; height: 300px;
+            margin: 0 auto;
+        }
+        .event p{ 
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-100%, 0%);
+            /* padding-top: 180px; */
+            /* padding-right: 800px;*/
+            font-size: 60px;
+            font-weight: bolder;
+            /* text-align: center; */
+            white-space: nowrap;
+            padding: 32px;
+        }
+    
+        /* .event > a > img{
+            width:100%; height:100%;
+            display: block;
+            object-fit: cover;
+            object-position: 70% center;
+        } */
+        .Jayoorown_custom{
+            margin: 0 auto;
+            height:400px; width:800px;
+            display: flex;
+            align-items: center;
+        }
+        .Jayoorown_custom_text{
+            padding-left: 78px;
+        }
+        .Jayoorown_custom_text :nth-child(1){
+            font-size: 40px;
+        }
+        .Jayoorown_custom_text :nth-child(2){
+            font-size: 16px;
+        }
+        .Title_CapsuleSalpyeoboghi{
+            display: block;
+            width: 100%; height: 560px;
+            overflow: hidden;
+            /* border: 1px solid red; */
+            background-image: url(./M2_genio_s_WEB_3000x834_1.webp);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .Title_CapsuleSalpyeoboghi_text{
+            position: relative;
+            width: 1080px;
+            margin: 0 auto;
+        }
+        .Title_CapsuleSalpyeoboghi_text p{
+            font-size: 40px;
+            /* text-align: center; */
+            /* padding-right: 1000px; */
+            /* padding-top: 240px; */
+            white-space: nowrap;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-150%, 250%);
+        }
+        /* .Title_CapsuleSalpyeoboghi > img{
+            width:100%; height:100%;
+            object-fit: cover;
+            object-position: 60% center;
+        } */
+        .Title_MachineSalpyeoboghi{
+            display: block;
+            width: 100%; height: 560px;
+            overflow: hidden;
+            background-image: url(./side-view-man-standing-kitchen-holding-coffee-mug.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .Title_MachineSalpyeoboghi_text{
+            position: relative;
+            width: 1080px;
+            margin: 0 auto;
+        }
+        .Title_MachineSalpyeoboghi_text>p{
+            font-size: 40px;
+            text-align: center;
+            /* padding-left: 700px; */
+            /* padding-top: 240px; */
+            white-space: nowrap;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(30%, 180%);
+        }
+        /* .Title_MachineSalpyeoboghi > img{
+            width:100%; height:100%;
+            object-fit: cover;
+            object-position: 60% center;
+        } */
+        .capsule_category{
+            /* position: relative; */
+            width: 1080px;
+            margin: 0 auto;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 800px;
+            padding-top: 104px;
+            list-style: none;
+        }
+        .Machine_category{
+            /* position: relative; */
+            align-items: center;
+            margin: 0 auto;
+            width: 1080px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 800px;
+            padding-top: 104px;
+            list-style: none;
+        }
+        .capsule_title{
+            background-image: url(./Sabores_1.png);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            width: 1080px; height: 400px;
+            text-align: center;
+            font-size: 46px;
+            font-weight: lighter;
+            color: #3E3A32;
+        }
+        .machine_title{
+            background-image: url(./machinescategory.webp);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 72%;
+            width: 1080px; height: 400px;
+            text-align: center;
+            font-size: 46px;
+            font-weight: lighter;
+            color: #3E3A32;
+        }
+        .slider_buttons_capsule{
+            width: 360px;
+            margin: 0 auto;
+            margin-top: 64px;
+            margin-bottom: 64px;
+        }
+        .slider_buttons_machine{
+            width: 360px;
+            margin: 0 auto;
+            margin-top: 64px;
+            margin-bottom: 64px;
+        }
+        .arrows{
+            width: 320px;
+            margin: 0 auto;
+            justify-content: space-between;
+            display: flex;
+
+        }
+        .arrows > a{
+            text-decoration: none;
+            display: inline-block;
+            border: 16px solid transparent;
+        }
+        .arrows > a:first-child{
+            border-right-color:#3E3A32;
+        }
+        .arrows > a:last-child{
+            border-left-color:#3E3A32;
+        }
+        .radio_buttons{
+            justify-content: space-between;
+            display: flex;
+            align-items: center;
+            width: 220px;
+            margin: 0 auto;
+        }
+        .radio_buttons a{
+            text-decoration: none;
+            width: 16px; height: 16px;
+            background-color: #d9d9d9;
+            opacity: 50%;
+            border-radius: 50%;
+            display: block;  
+            /* cursor: pointer;           */
+        }
+        .capsule_left:hover{
+            transform-origin: 75% center;
+            transform: scale(1.2);
+            transition: all 0.1s linear;
+        }
+        .capsule_right:hover{
+            transform-origin: 25% center;
+            transform: scale(1.2);
+            transition: all 0.1s linear;
+        }
+        .machine_left:hover{
+            transform-origin: 75% center;
+            transform: scale(1.2);
+            transition: all 0.1s linear;
+        }
+        .machine_right:hover{
+            transform-origin: 25% center;
+            transform: scale(1.2);
+            transition: all 0.1s linear;
+        }
+
+        .button:hover{
+            transform: scale(1.1);
+            transition: all 0.1s linear;
+        }
+        .capsule_category ul{
+            display: flex;
+            justify-content: left;
+            list-style: none;
+            width: 1080px ;height:400px;
+            gap: 16px;
+            margin-top: -40px;
+        }
+        .capsule_inner_category ul{
+            display: flex;
+            overflow-x: scroll;
+            /* border: 1px solid red;    */
+        }
+        /* .capsule_inner_category ul::-webkit-scrollbar{
+            display: none;
+        } */
+        .capsule_inner_category ul::-webkit-scrollbar{
+            height: 16px;
+        }
+
+        .capsule_inner_category ul::-webkit-scrollbar-thumb{
+            height: 30%;
+            background: #d9d9d9;
+            border-radius: 10px;
+        }
+
+        .capsule_inner_category ul::-webkit-scrollbar-track{
+            background: rgba(217, 217, 217,0.3);
+            border-radius: 10px;
+        }
+        .Machine_category ul{
+            display: flex;
+            justify-content: left;
+            list-style: none;
+            width: 1080px;height:400px;
+            gap: 16px;
+            margin-top: -40px;
+            box-shadow: -20px 0px 25px 0 rgb(255,255,255) inset 
+        }
+        .machine_inner_category ul{
+            display: flex;
+            overflow-x: scroll;
+        }
+
+        .machine_inner_category ul::-webkit-scrollbar{
+            height: 16px;
+        }
+
+        .machine_inner_category ul::-webkit-scrollbar-thumb{
+            height: 30%;
+            background: #d9d9d9;
+            border-radius: 10px;
+        }
+
+        .machine_inner_category ul::-webkit-scrollbar-track{
+            background: rgba(217, 217, 217,0.3);
+            border-radius: 10px;
+        }
+        .product_box{
+            width: 258px; height: 358px;
+            border: 1px solid #755813;
+            border-radius: 24px;
+            text-align: center;
+            vertical-align: middle;
+            justify-content: center;
+        }
+        .product_title{
+            display: block;
+            text-align: center;
+        }
+        .product_title :hover{
+            text-underline-position: below;
+        }
+        .product_flavor{
+            display: block;
+            padding-top: 24px;
+        }
+        .product_count{
+            background-color: #D9D9D9;
+            border-radius: 20px;
+            display: flex;
+            width: 160px; height: 40px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .product_count > p{
+            line-height: 36px;
+            text-align: center;
+            margin: 0 0;
+            font-size: 20px;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background-color: #FFFFFF;
+            background-position: center;
+        }
+        .product_count > a{
+            line-height: 36px;
+            text-align: center;
+            margin: 0 0;
+            font-size: 20px;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background-color: #FFFFFF;
+            background-position: center;
+        }
+        .cart_container{
+            margin: 0 auto;
+            margin-top:8px;
+            width: 200px;
+            margin-left:auto;
+            margin-right:auto;
+            justify-content: space-between;
+            display: flex;
+        }
+        .cart_container > a{
+            width: 32px; height: 32px;
+            background-image: url(./cart.png);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            display: inline-block;
+        }
+        .product_index{
+            margin-top: 16px;
+            align-items: center;
+        }
+        .product_index > a{
+            color: #3E3A32;
+            text-decoration: none;
+        }
+        .product_index > figure > a> img{
+            width: 160px; height: 160px;
+        }
+        .product_title{
+            text-align: center;
+            font-size: 20px;
+            font-weight: 400;
+            margin-top: -8px;
+            width: 248px;
+        }
+        .product_flavor{
+            margin: 0 auto;
+            margin-top: -24px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: lighter;
+        }
+        .price{
+            display: flex;
+            width: 256px;
+            gap: 8px;
+            text-align: center;
+            justify-content:center;
+            align-items: center;
+        }
+        .discount_price{
+            width: 32px;
+            font-size: 12px;
+            text-decoration: line-through;
+            color: gray;
+            letter-spacing:-1px;
+        }
+        .discount_percentage{
+            width: 32px;
+            font-size: 12px;
+            color: mediumvioletred;
+            letter-spacing:-1px;
+            word-spacing: -1px;
+        }
+        .product_price{
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .star_counting{
+            color: #3E3A32;
+            width: 160px; height: 16px;
+            margin: 0 auto;
+            margin-top: 24px;
+            justify-content: space-between;
+            display: flex;
+            align-items: center;
+            vertical-align: middle;
+        }
+        .star_counting > span{
+            display: flex;
+            width: 16px; height: 16px;
+        }
+        .product_count_button{
+            cursor: pointer;
+        }
+        .Bottom_container{
+            display: block;
+        }
+        .CS_center{
+            padding-top: 160px;
+            width: 800px; height: auto;
+            margin: 0 auto;
+            display: block;
+            text-align: center;
+        }
+        .CS_center li{
+            display: inline-block;
+            width: 136px; height: 40px;
+            border: 1px solid #3E3A32;
+            border-radius: 30px;
+            text-align: center;
+            align-items: center;
+            margin: 28px;
+            line-height: 40px;
+        }
+        .line{
+            display: block;
+            border: 1px solid #3E3A32;
+            width: 1000px; height: 1px;
+            margin: 0 auto;
+            margin-top: 64px;
+        }
+        .upper_menu{
+            /* border: 1px solid red; */
+            display: flex;
+            width: 800px; height: 256px;
+            margin: 0 auto;
+            margin-top: 64px;
+        }
+        .upper_menu ul{
+            width: 200px;
+            font-weight:bolder;
+            list-style: none;
+            text-align: left;
+        }
+        .upper_menu li{
+            font-weight: lighter;
+            padding-bottom: 8px;
+        }
+        .upper_menu li:nth-child(1){
+            padding-top: 20px;
+        }
+        .under_menu{
+            /* border: 1px solid red; */
+            display: flex;
+            width: 800px; height: 80px;
+            margin: 0 auto;
+        }
+        .under_menu ul{
+            width: 200px; height: 40px;
+            font-weight: bolder;
+            list-style: none;
+            line-height: 80px;
+        }
+        .bottom_menu{
+            display: block;
+            width: 100%; height: 280px;
+            background-color: #D9D9D9;
+            text-align: center;
+        }
+        .bottom_menu p{
+            font-size: 16px;
+            padding-top: 40px;
+        }
+        .email_subscribe input{
+            margin-top: 24px;
+            width: 400px;
+            border: none;
+            background-color: #D9D9D9;
+            border-bottom: 1px solid #3E3A32;
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+        .email_subscribe input:focus{
+            outline: none;
+        }
+        .serch_button_sub{
+            font-size: 16px;
+            color: #D9D9D9;
+            position: relative;
+            border: none;
+            background-color: #755813;
+            cursor: pointer;
+            width: 80px; height: 40px;
+            border-radius: 20px;
+            margin-left: 16px;
+        }
+        .bottom_menu_index_container{
+            /* border: 1px solid red; */
+            display: flex;
+            width: 1200px; height: 120px;
+            margin: 0 auto;
+            justify-content: space-between;
+        }
+        .bottom_menu_index_container ul{
+            width:160px;
+            display: flex;
+            list-style: none;
+            justify-content: space-between;
+        }
+        .bottom_menu_index_container p{
+            margin-bottom: 16px;
+        }
+        .bottom_menu_index_1{
+            display: inline-block;
+            width: 264px;
+            text-align: left;
+        }
+        .bottom_menu_index_2{
+            display: inline-block;
+            width: 264px;
+            text-align: left;
+
+        }
+        .bottom_menu_index_3{
+            display: inline-block;
+            width: 264px;
+            text-align: left;
+
+        }
+        .bottom_menu_index_1 a, .bottom_menu_index_2 a, .bottom_menu_index_3 a{
+            display: inline-block;
+            width: 32px; height: 32px;
+        }
+        .bottom_menu_index_1 .facebook{
+            background-image: url(./group_3x.webp);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+        .bottom_menu_index_1 .navercafe{
+            background-image: url(./Socialmedia_NaverCafeIcon.webp);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+        .bottom_menu_index_1 .insta{
+            background-image: url(./instagram-logo.webp);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+        .bottom_menu_index_2 .creditcard{
+            background-image: url(./card-2.webp);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+        .bottom_menu_index_2 .KCP{
+            background-image: url(./KCP-2.webp);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+        .bottom_menu_index_2 .Npay{
+            background-image: url(./n_pay.webp);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+        .bottom_menu_index_3 .MMS{
+            background-image: url(./group-8_3x.webp);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+        .bottom_menu_index_3 .Mail{
+            background-image: url(./group-9_3x.webp);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+        .bottom_menu_index_3 .phone{
+            background-image: url(./group-10_3x.webp);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 70%;
+        }
+        .basement_container{
+            display: block;
+            margin: 0 auto;
+        }
+        .basement{
+            padding-top:40px;
+            display: flex;
+            width: 1200px; height: 80px;
+            margin: 0 auto;
+            justify-content: space-between;
+        }
+        .basement ul{
+            display: flex;
+            list-style: none;
+            width: 264px;
+            white-space: nowrap;
+            gap: 32px;
+        }
+        .netsle_logo{
+            width: 100px; height: 32px;
+            background-image: url(./copyright-logo-desktop.webp);
+        }
+        .Bottom_container a{
+            text-decoration: none;
+        }
+        .Bottom_container a:visited{
+            text-decoration: none;
+            color: #3E3A32;
+        }
+
+        .capsule_inner_category {
+            display: none;
+        }
+
+        
+        .radio_buttons .button_active {
+            background-color: #d9d9d9;
+            opacity: 1;
+        }
+        
+        .machine_inner_category {
+            display: none;
+        }
+
+
+        .category_active {
+            display: block;
+        }
+    </style>
+</head>
+    <body>
+    <div class="container">
+        <div class="top">
+                <input id="choose_cntry" type="checkbox"/>
+                <label for="choose_cntry"><p class="choose_cntry_pointor">국가선택</p></label>
+                    <div class="cntry_list_container">
+                        <div class="cntry_list">
+                            <p class="cntry_list_title">Country Selector</p>
+                            <table>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-argentina.webp" /><div><p>Argentina</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-austria.webp" /><div><p>Austria</p><p>&#40;German&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-belgium.webp" /><div><p>Belgium</p><p>&#40;French&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-belgium.webp" /><div><p>Belgium</p><p>&#40;Dutch&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-bosnia.webp" /><div><p>Bosnia</p><p>&#40;Bosnian&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-brazil.webp" /><div><p>Brazil</p><p>&#40;Portuguese&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-bulgaria.webp" /><div><p>Bulgaria</p><p>&#40;Bulgarian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-canada.webp" /><div><p>Canada</p><p>&#40;English&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-canada.webp" /><div><p>Canada</p><p>&#40;French&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-caribbean.webp" /><div><p>Caribbean</p><p>&#40;English&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-chile.webp" /><div><p>Chile</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-columbia.webp" /><div><p>Colombia</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-costa-rica.webp" /><div><p>Costa-rica</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-croatia.webp" /><div><p>Croatia</p><p>&#40;Croatian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-czechia.webp" /><div><p>Czechia</p><p>&#40;Czeck&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-denmark.webp" /><div><p>Denmark</p><p>&#40;Dannish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./dominican-republic.webp" /><div><p>Dominican</p><p>&#40;republic Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-ecuador.webp" /><div><p>Ecuador</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-estonia.webp" /><div><p>Estonia</p><p>&#40;Estonian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-finland.webp" /><div><p>Finland</p><p>&#40;Finnish&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-france.webp" /><div><p>France</p><p>&#40;French&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-germany.webp" /><div><p>Germany</p><p>&#40;German&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-greece.webp" /><div><p>Greece</p><p>&#40;Greek&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-guatemala.webp" /><div><p>Guatemala</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-honduras.webp" /><div><p>Honduras</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-hong-kong.webp" /><div><p>Hong Kong</p><p>&#40;English&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-hong-kong.webp" /><div><p>Hong Kong</p><p>&#40;Chinese&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-hungary.webp" /><div><p>Hungary</p><p>&#40;Hungarian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-indonesia.webp" /><div><p>Indonesia</p><p>&#40;Indonesian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-israel.webp" /><div><p>Israel</p><p>&#40;Hebrew&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-italy.webp" /><div><p>Italy</p><p>&#40;Italian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-japan.webp" /><div><p>Japan</p><p>&#40;Japanese&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-kazakhstan.webp" /><div><p>Kazakhstan</p><p>&#40;Kazakh&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-kazakhstan.webp" /><div><p>Kazakhstan</p><p>&#40;Russian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-korea.webp" /><div><p>Korea</p><p>&#40;Korean&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-latvia.webp" /><div><p>Latvia</p><p>&#40;Latvian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-lithuania.webp" /><div><p>Lithuania</p><p>&#40;Lithuanian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-macedonia.webp" /><div><p>Macedonia</p><p>&#40;English&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-malaysia.webp" /><div><p>Malaysia</p><p>&#40;Malay&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-malta.webp" /><div><p>Malta</p><p>&#40;Maltese&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-mexico.webp" /><div><p>Mexico</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-netherland.webp" /><div><p>Netherland</p><p>&#40;Dutch&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-nicaragua.webp" /><div><p>Nicaragua</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-norway.webp" /><div><p>Norway</p><p>&#40;Norwegian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-paraguay.webp" /><div><p>Panama</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-paraguay.webp" /><div><p>Paraguay</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-peru.webp" /><div><p>Peru</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-philippines.webp" /><div><p>Philippines</p><p>&#40;Filipino&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-poland.webp" /><div><p>Poland</p><p>&#40;Polish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-portugal.webp" /><div><p>Portugal</p><p>&#40;Portuguese&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-ireland.webp" /><div><p>Ireland</p><p>&#40;English&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-romania.webp" /><div><p>Romania</p><p>&#40;Romanian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-russia.webp" /><div><p>Russia</p><p>&#40;Russian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-singapore.webp" /><div><p>Singapore</p><p>&#40;Malay&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-slovakia.webp" /><div><p>Slovakia</p><p>&#40;Slovak&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-slovenia.webp" /><div><p>Slovenia</p><p>&#40;Slovene&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-south-africa.webp" /><div><p>South</p><p>&#40;Africa English&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-spain.webp" /><div><p>Spain</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-sweden.webp" /><div><p>Sweden</p><p>&#40;Swedish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-switzerland.webp" /><div><p>Switzerland</p><p>&#40;German&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-switzerland.webp" /><div><p>Switzerland</p><p>&#40;French&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-taiwan.webp" /><div><p>Taiwan</p><p>&#40;English&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-taiwan.webp" /><div><p>Taiwan</p><p>&#40;Taiwanese&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-thailand.webp" /><div><p>Thailand</p><p>&#40;English&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-thailand.webp" /><div><p>Thailand</p><p>&#40;Thai&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-turkey.webp" /><div><p>Turkey</p><p>&#40;Turkish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-uae.webp" /><div><p>Uae</p><p>&#40;English&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-uae.webp" /><div><p>Uae</p><p>&#40;Arabic&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-ukraine.webp" /><div><p>Ukraine</p><p>&#40;Ukranian&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-united-kingdom.webp" /><div><p>UK</p><p>&#40;English&#41;</p></div></a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#"><img src="./flag-uruguay.webp" /><div><p>Uruguay</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-usa.webp" /><div><p>USA</p><p>&#40;English&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-venezuela.webp" /><div><p>Venezuela</p><p>&#40;Spanish&#41;</p></div></a></td>
+                                    <td><a href="#"><img src="./flag-vietnam.webp" /><div><p>Vietnam</p><p>&#40;Vietnamese&#41;</p></div></a></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+            │
+            <div class="serch">
+                <input type="text" placeholder="" onfocus="this.placeholder=''" onblur="this.placeholder = '여기에 검색어를 입력'" />
+                <button class="serch_button"><img src="./magnifying-glass.png" /></button>
+            </div>
+        </div>
+        <div class="top_menu">
+            <div class="bi_button">
+                <a href="https://www.dolce-gusto.co.kr"><img src="./logo/New BI_01.svg" /></a>
+            </div>
+            <div class="main_menu_upper">
+                <ul id="main_menu">
+                    <li><a href="#">캡슐</a>
+                        <ul id="sub_menu">
+                            <li><a href="#"><img style=" width: 80%;" src="./Drink-Nav-Americano-180px_1.webp" /><p>아메리카노</p></a></li>
+                            <li><a href="#"><img style=" width: 60%; padding-top: 15%" src="./Lungo_desktop.webp" /><p>룽고</p></a></li>
+                            <li><a href="#"><img style=" width: 80%;" src="./Espresso_Desktop_1.webp" /><p>에스프레소</p></a></li>
+                            <li><a href="#"><img style=" width: 80%;" src="./Drink-Nav-LatteCapp-180px.webp" /><p>카페</p></a></li>
+                            <li><a href="#"><img style=" width: 80%;" src="./coldbrew_200x200_1_2.webp" /><p>아이스</p></a></li>
+                            <li><a href="#"><img style=" width: 52%;" src="./chocolates.webp" /><p>초콜릿</p></a></li>
+                            <li><a href="#"><img style=" width: 75%;" src="./Drink-Nav-All-180px.webp" /><p>캡슐 전체보기</p></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">머신</a>
+                        <ul id="sub_menu">
+                            <li><a href="#"><img style=" width: 80%;" src="./Genio_S_mob_1.webp" /><p>지니오 S</p></a></li>
+                            <li><a href="#"><img style=" width: 80%;" src="./GNB_Piccolo_2.webp" /><p>피콜로 XS</p></a></li>
+                            <li><a href="#"><img style=" width: 80%;" src="./Infinissima.webp" /><p>인피니시마</p></a></li>
+                            <li><a href="#"><img style=" width: 48%;" src="./Mini-me.webp" /><p>미니미</p></a></li>
+                            <li><a href="#"><img style=" width: 50%;" src="./lumio.webp" /><p>루미오</p></a></li>
+                            <li><a href="#"><img style=" width: 71%;" src="./genio_s_icon_resized.webp" /><p>머신 전체보기</p></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">액세서리</a>
+                        <ul id="sub_menu">
+                            <li><a href="#"><img style=" width: 80%;" src="./Nav_thumb_glass_cup1-min.webp" /><p>글래스</p></a></li>
+                            <li><a href="#"><img style=" width: 80%;" src="./Nav_thumb_travel_mug-min.webp" /><p>트래블 머그</p></a></li>
+                            <li><a href="#"><img style=" width: 80%;" src="./Nav_thumb_capsule_holder-min.webp" /><p>캡슐 홀더</p></a></li>
+                            <li><a href="#"><img style=" width: 81%;" src="./Nav_thumb_all_accessories-min.webp" /><p>악세서리<br>전체보기</p></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">프로모션</a>
+                        <ul id="sub_menu">
+                            <li><a href="#"><img style=" width: 100%;" src="./promotion_icon_1.webp" /><p>프로모션</p></a></li>
+                            <li><a href="#"><img style=" width: 100%;" src="./YCSAH.webp" /><p>YOUR COFFE SHOT AT HOME</p></a></li>
+                            <li><a href="#"><img style=" width: 100%;" src="./genio-s-star.webp" /><p>지니오 S 스타 번들팩</p></a></li>
+                            <li><a href="#"><img style=" width: 100%;" src="./genio-touch.webp" /><p>지니오 S 터치 자세히 보기</p></a></li>
+                            <li><a href="#"><img style=" width: 100%;" src="./GNB_recycling_2.webp" /><p>리사이클링 이벤트</p></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">정기배송</a>
+                        <ul id="sub_menu">
+                            <li><a href="#"><img style=" width: 120px;" src="./24pro_DC_MO.jpg" /><p>혜택 자세히 보기</p></a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="main_right_menu">
+                    <a href="#"><img src="./account_bw.png" /></a>
+                    <a href="#"><img src="./cart.png" /></a>
+                </div>
+            </div>
+        </div>
+        <div class="Main_container">
+            <div class="event">
+                <a href="#">
+                    <div>
+                        <p>캡슐커피<br>정기배송 서비스 오픈</p>
+                    </div>
+                    <!-- <img src="./WS_3000x834.webp" /> -->
+                </a>
+            </div>
+            <div class="Jayoorown_custom" >
+                <img src="./Ellipse 5.png" style="height:260px; width:260px;"/>
+                <div class="Jayoorown_custom_text">
+                    <h3>자유로운 커스텀</h3>
+                    <p>블랙 또는 화이트, 핫 또는 아이스 등 원하는 대로 조절할 수 있습니다. 네스카페® 돌체구스토®와 함께하면, 집에서 편안하게 나만의 커피숍을 이용할 수 있습니다. 단 몇 초 만에 좋아하는 음료를 즐기며, 세계 최고의 멀티-베버리지 시스템을 경험해 보세요.</p>
+                </div>
+            </div>
+
+            <div class="Capsule_shopping">
+                <div class="Title_CapsuleSalpyeoboghi">
+                    <div class="Title_CapsuleSalpyeoboghi_text"><p>캡슐 살펴보기</p></div>
+                    <!-- <img src="./M2_genio_s_WEB_3000x834_1.webp" /> -->
+                </div>
+                <div class="capsule_product">
+                    
+                    <ul class="capsule_category">
+                        <li class="americano capsule_inner_category category_active">
+                            <p class="capsule_title">아메리카노</p>
+                            <ul>
+                                <li class="product_box ameicano_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./americano_2_8.webp" alt="아메리카노"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">아메리카노</h4></a>
+                                        <p class="product_flavor">온화함 &amp; 부드러움</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus" value='-'>-</a>
+                                                <p class="result">1</p>
+                                                <a class="product_count_button button_plus" value='+'>+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box ameicano-Large_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./2ctjxtvzan_1.webp" alt="아메리카노 대용량"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">아메리카노 대용량팩</h4></a>
+                                        <p class="product_flavor">온화함 &amp; 부드러움</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <p class="discount_price">17,500</p>
+                                            <p class="product_price">
+                                            KRW <span class="inner_price">12,250</span>
+                                            </p>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box ameicano-intenso_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./intenso.webp" alt="아메리카노 인텐소"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">아메리카노 인텐소</h4></a>
+                                        <p class="product_flavor">아로마 &amp; 풀 맛</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <p class="discount_price"></p>
+                                            <p class="product_price">
+                                            KRW <span class="inner_price">9,800</span>
+                                            </p>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box ameicano-mild_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./mild_1000x1000.webp" alt="아메리카노 마일드"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">아메리카노 마일드</h4></a>
+                                        <p class="product_flavor">은은함 &amp; 구운 향</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <p class="discount_price"></p>
+                                            <p class="product_price">
+                                            KRW <span class="inner_price">9,800</span>
+                                            </p>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box ameicano-rich_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./rich_1000x1000.webp" alt="아메리카노 리치 아로마"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">아메리카노 리치 아로마</h4></a>
+                                        <p class="product_flavor">로스티함 &amp; 파워풀</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <p class="discount_price"></p>
+                                            <p class="product_price">
+                                            KRW <span class="inner_price">9,800</span>
+                                            </p>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box ameicano-bold_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./boldmorning.webp" alt="아메리카노 볼드 모닝"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">아메리카노 볼드 모닝</h4></a>
+                                        <p class="product_flavor">강렬함 &amp; 생동감 있는</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <p class="discount_price"></p>
+                                            <p class="product_price">
+                                            KRW <span class="inner_price">8,700</span>
+                                            </p>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box ameicano-decaffein_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./front-decaf.webp" alt="디카페인 아메리카노"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">디카페인 아메리카노</h4></a>
+                                        <p class="product_flavor">풍성함 &amp; 은은함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <p class="discount_price"></p>
+                                            <p class="product_price">
+                                            KRW <span class="inner_price">9,800</span>
+                                            </p>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box ameicano-collection_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./front-decaf.webp" alt="카페 아메리카노 컬렉션 팩"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">카페 아메리카노 컬렉션 팩</h4></a>
+                                        <p class="product_flavor">다양한 풍미 &amp; 선택지</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <p class="discount_price"></p>
+                                            <p class="product_price">
+                                            KRW <span class="inner_price">12,000</span>
+                                            </p>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="lungo capsule_inner_category">
+                            <p class="capsule_title">룽고</p>
+                            <ul>
+                                <li class="product_box lungo_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./thumbnail_57_.webp" alt="룽고"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">룽고</h4></a>
+                                        <p class="product_flavor">균형감 &amp; 로스티함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box lungo-decaffein_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./thumbnail_62__1.webp" alt="룽고 디카페인"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">룽고 디카페인</h4></a>
+                                        <p class="product_flavor">풍성함 &amp; 가득한 풍미</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box lungo-intenso_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./thumbnail_63__1.webp" alt="룽고 인텐소"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">룽고 인텐소</h4></a>
+                                        <p class="product_flavor">깊음 &amp; 강렬함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box lungo-large_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./lungo-x30_1.webp" alt="룽고 대용량팩"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">룽고 대용량팩</h4></a>
+                                        <p class="product_flavor">균형감 &amp; 로스티함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box lungo-absol-columbia_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./colombia.webp" alt="앱솔루트 오리진 콜롬비아"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">앱솔루트 오리진 콜롬비아</h4></a>
+                                        <p class="product_flavor">싱글오리진</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="espresso capsule_inner_category">
+                            <p class="capsule_title">에스프레소</p>
+                            <ul>
+                                <li class="product_box espresso_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./espresso_16.webp" alt="에스프레소"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">에스프레소</h4></a>
+                                        <p class="product_flavor">섬세함 &amp; 과일향</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box espresso_intenso_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./espresso_intenso_16.webp" alt="에스프레소 인텐소"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">에스프레소 인텐소</h4></a>
+                                        <p class="product_flavor">강렬함 &amp; 스파이시함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box espresso-double_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./pack_3x_3.webp" alt="더블 에스프레소"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">더블 에스프레소</h4></a>
+                                        <p class="product_flavor">리치함 &amp; 강렬함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box espresso-large_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./espresso-x30_1.webp" alt="에스프레소 대용량팩"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">에스프레소 대용량팩</h4></a>
+                                        <p class="product_flavor">섬세함 &amp; 과일향</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box espresso-ristretto-ardenza_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./thumbnail_64_.webp" alt="리스트레토 아덴자"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">리스트레토 아덴자</h4></a>
+                                        <p class="product_flavor">우추향 &amp; 스파이시함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="cafe capsule_inner_category">
+                            <p class="capsule_title">카페</p>
+                            <ul>
+                                <li class="product_box cafe-latte-macchiato_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./latte-macchiato-16.webp" alt="라테 마키아토"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">라테 마키아토</h4></a>
+                                        <p class="product_flavor">인상적인 풍성함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box cafe-cappucino_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./cappuccino_1_2.webp" alt="카푸치노"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">카푸치노</h4></a>
+                                        <p class="product_flavor">부드러운 우유거품 &amp; 은은한 카카오향</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box cafe-cafeaulait_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./cafe-au-lait-16.webp" alt="카페오레"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">카페오레</h4></a>
+                                        <p class="product_flavor">균형잡힌 부드러움</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box cafe-caramel-macchiato_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./caramel-latte-macchiato-16-min.webp" alt="카라멜 라테 마키아토"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">카라멜 라테 마키아토</h4></a>
+                                        <p class="product_flavor">부드러운 풍성함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box cafe-flat-white_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./flat-white-16_1.webp" alt="플랫 화이트"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">플랫 화이트</h4></a>
+                                        <p class="product_flavor">벨베티 &amp; 스무스</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box cafe-collection_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./cafemenu_thumnail.webp" alt="카페 메뉴 컬렉션 팩"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">카페 메뉴 컬렉션 팩</h4></a>
+                                        <p class="product_flavor">다양한 풍미 &amp; 선택지</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li class="ice capsule_inner_category">
+                            <p class="capsule_title">아이스</p>
+                            <ul>
+                                <li class="product_box ice-americano_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./icedcoffeeblend-min.webp" alt="아이스 아메리카노"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">아이스 아메리카노</h4></a>
+                                        <p class="product_flavor">강렬함 &amp; 상쾌함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box cold-brew_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./cold_brew_capsule_1.webp" alt="콜브 브루"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">콜드 브루</h4></a>
+                                        <p class="product_flavor">부드러움 &amp; 신선함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="chocolate capsule_inner_category">
+                            <p class="capsule_title">초콜릿</p>
+                            <ul>
+                                <li class="product_box chcocino_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./thumbnail_66_.webp" alt="초코치노"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">초코치노</h4></a>
+                                        <p class="product_flavor">감미로운 강렬함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box nesquik_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./thumbnail_67__1.webp" alt="네스퀵"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">네스퀵</h4></a>
+                                        <p class="product_flavor">부드러움 &amp; 달콤함</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price">9,800</span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">6,860</span>
+                                            </span>
+                                            <span class="discount_percentage">- 30%</span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="slider_buttons_capsule">
+                        <div class="arrows">
+                            <a href="#" class="capsule_left"></a>
+                            <div class="radio_buttons">
+                                <a href="#" class="capsule_button button_active"></a>
+                                <a href="#" class="capsule_button"></a>
+                                <a href="#" class="capsule_button"></a>
+                                <a href="#" class="capsule_button"></a>
+                                <a href="#" class="capsule_button"></a>
+                                <a href="#" class="capsule_button"></a>
+                            </div>
+                            <a href="#" class="capsule_right"></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="Machine_shopping">
+                <div class="Title_MachineSalpyeoboghi">
+                    <div class="Title_MachineSalpyeoboghi_text"><p>머신 살펴보기</p></div>
+                    <!-- <img src="./side-view-man-standing-kitchen-holding-coffee-mug.jpg" /> -->
+                    </div>
+                </div>
+                <div class="Machine_product">
+                    <ul class="Machine_category">
+                        
+                        <li class="genio machine_inner_category category_active">
+                            <p class="machine_title">지니오</p>   
+                            <ul>
+                                <li class="product_box genios-basic_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./genios_basic.webp" alt="지니오 S 베이직"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">지니오 S 베이직</h4></a>
+                                        <p>Automatic</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">149,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box genios-plus_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./genoos_plus.webp" alt="지니오 S 플러스"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">지니오 S 플러스</h4></a>
+                                        <p><br></p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">159,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box genios-touch_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./genios_touch_1_1.webp" alt="지니오 S 터치"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">지니오 S 터치</h4></a>
+                                        <p>Automatic</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">179,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box genios-star_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./genios_star.webp" alt="지니오 S 스타 번들팩"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">지니오 S 스타 번들팩</h4></a>
+                                        <p><br></p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">189,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box newgenio-black_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./new_genio_th.webp" alt="뉴 지니오 블랙"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">뉴 지니오 블랙</h4></a>
+                                        <p><br></p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">99,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box genios-touch-silver_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./geniostouch_silver_thumnail.webp" alt="지니오 S 터치 실버"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">지니오 S 터치 실버</h4></a>
+                                        <p>Automatic</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">179,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="piccoloXS machine_inner_category">
+                            <p class="machine_title">피콜로 XS</p>
+                            <ul>
+                                <li class="product_box picoloXS-black_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./piccoloxs_bk.webp" alt="피콜로 XS 블랙"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">피콜로 XS 블랙</h4></a>
+                                        <p><br></p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">109,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box picoloXS-white_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./piccoloxs_wh.webp" alt="피콜로 XS 화이트"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">피콜로 XS 화이트</h4></a>
+                                        <p><br></p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">109,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li class="infinissima machine_inner_category">
+                            <p class="machine_title">인피니시마</p>
+                            
+                            <ul>
+                                <li class="product_box infinissima-black_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./infinissima_bk.webp" alt="인피니시마 블랙"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">인피니시마 블랙</h4></a>
+                                        <p><br></p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">129,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box infinissima-white_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./infinissima_wh.webp" alt="인피니시마 화이트"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">인피니시마 화이트</h4></a>
+                                        <p><br></p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">129,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box infinissima-touch-white_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./infinissima_touch_wh_111.webp" alt="인피니시마 터치 화이트"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">인피니시마 터치 화이트</h4></a>
+                                        <p><br></p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">169,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box infinissima-touch-charcoal_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./infinissima_touch_ch.webp" alt="인피니시마 터치 챠콜"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">인피니시마 터치 챠콜</h4></a>
+                                        <p><br></p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">169,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="minime machine_inner_category">
+                            <p class="machine_title">미니미</p>   
+                            <ul>
+                                <li class="product_box minime-black_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./minime_black_2.webp" alt="미니미 블랙"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title">미니미 블랙</h4></a>
+                                        <p>Automatic</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">149,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="product_box minime-pianoblack-cherryred_">
+                                    <div class="product_index">
+                                        <figure>
+                                            <a href="#"><img src="./minime_red.webp" alt="미니미 피아노블랙 &amp; 체리레드"></a>
+                                        </figure>
+                                        <a href="#"><h4 class="product_title" style="letter-spacing: -1px;">미니미 피아노블랙 &amp; 체리레드</h4></a>
+                                        <p>Automatic</p>
+                                        <div class="star_counting">
+                                            <span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span><span><img src="./star_filled.png" /></span>
+                                            <code>(</code><span class="reviewer_counting"></span><code>)</code>
+                                        </div>
+                                        <div class="price">
+                                            <span class="discount_price"></span>
+                                            <span class="product_price">
+                                            KRW <span class="inner_price">89,000</span>
+                                            </span>
+                                            <span class="discount_percentage"></span>
+                                        </div>
+                                        <div class="cart_container">
+                                            <div class="product_count">
+                                                <a class="product_count_button button_minus">-</a>
+                                                <p>1</p>
+                                                <a class="product_count_button button_plus">+</a>
+                                            </div>
+                                            <a href=""><img src="" alt=""></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="slider_buttons_machine">
+                        <div class="arrows">
+                            <a href="#" class="machine_left"></a>
+                            <div class="radio_buttons">
+                                <a href="#" class="machine_button button_active"></a>
+                                <a href="#" class="machine_button"></a>
+                                <a href="#" class="machine_button"></a>
+                                <a href="#" class="machine_button"></a>
+                            </div>
+                            <a href="#" class="machine_right"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="Bottom_container">
+            <ul class="CS_center">
+                <li><a href="#">고객센터</a></li>
+                <li><a href="#">공식영상 보러가기</a></li>
+                <li><a href="#">전체 상품 보기</a></li>
+            </ul>
+            <div class="line"></div>
+            <div class="upper_menu">
+                <ul>커피 및 음료
+                    <li><a href="#">아메리카노</a></li>
+                    <li><a href="#">에스프레소</a></li>
+                    <li><a href="#">카페</a></li>
+                    <li><a href="#">아이스</a></li>
+                    <li><a href="#">초콜릿</a></li>
+                    <li><a href="#">콜드브루</a></li>
+                </ul>
+                <ul>머신
+                    <li><a href="#">지니오 S</a></li>
+                    <li><a href="#">피콜로 XS</a></li>
+                    <li><a href="#">인피니시마</a></li>
+                    <li><a href="#">미니미</a></li>
+                    <li><a href="#">루미오</a></li>
+                </ul>
+                <ul>액세서리
+                    <li><a href="#">글라스</a></li>
+                    <li><a href="#">트래블 머그</a></li>
+                    <li><a href="#">캡슐 홀더</a></li>
+                </ul>
+                <ul>커피의 재발견
+                    <li><a href>돌체구스토 시스템</a></li>
+                    <li><a href>커피의 세계</a></li>
+                    <li><a href>지속 가능성</a></li>
+                    <li><a href>스마트 캡슐</a></li>
+                    <li><a href>자주 묻는 질문</a></li>
+                    <li><a href>이용 약관</a></li>
+                    <li><a href>정기배송 이용약관</a></li>
+                </ul>
+            </div>
+            <div class="under_menu">
+                <ul><a href="">캡슐 전체 보기</a></ul>
+                <ul><a href="">머신 사용해보기</a></ul>
+                <ul><a href="">액세서리 전체보기</a></ul>
+                <ul></ul>
+            </div>
+            <div class="bottom_menu">
+                <p>이메일을 입력하여 구독하고 독점 혜택을 받으세요!</p>
+                <div class="email_subscribe">
+                    <input type="text" placeholder="E-mail" onfocus="this.placeholder=''" onblur="this.placeholder = 'E-mail'" />
+                    <button class="serch_button_sub">구독</button>
+                </div>
+                <div class="bottom_menu_index_container">
+                    <div class="bottom_menu_index_1">
+                        <p>네스카페 돌체 구스토를 팔로우 하세요.</p>
+                        <ul>
+                            <li><a class="facebook" href="#"></a></li>
+                            <li><a class="navercafe" href="#"></a></li>
+                            <li><a class="insta" href="#"></a></li>
+                        </ul>
+                    </div>
+                    <div class="bottom_menu_index_2">
+                        <p>지불 방법</p>
+                        <ul>
+                            <li><a class="creditcard" href="#"></a></li>
+                            <li><a class="KCP" href="#"></a></li>
+                            <li><a class="Npay" href="#"></a></li>
+                        </ul>
+                    </div>
+                    <div class="bottom_menu_index_3">
+                        <p>고객 지원</p>
+                        <ul>
+                            <li><a class="MMS" href="#"></a></li>
+                            <li><a class="Mail" href="#"></a></li>
+                            <li><a class="phone" href="#"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="basement_container">
+            <div class="basement">
+                <ul>
+                    <li><a href="#">쿠키(COOKIE)의 이용</a></li>
+                    <li><a href="#">개인정보 처리방침</a></li>
+                    <li><a href="#">이용약관</a></li>
+                </ul>
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <ul>
+                    <li class="netsle_logo"></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+        <script src="product.js"></script>
+    <script>
+        //국가 목록 창 외부 클릭시 닫히게 하기 시작
+        const chooseCntry = document.getElementById('choose_cntry');
+        const cntryListContainer = document.querySelector('.cntry_list_container')
+
+        window.addEventListener('click', (i)=>{
+            console.log(i.target);
+            if(i.target === cntryListContainer)
+            chooseCntry.checked = false;
+        })
+        //국가 목록 창 외부 클릭시 닫히게 하기 종료
+
+        //상품 -+클릭시 개수 카운팅 시작
+
+        count()
+        function count(){
+            const resultElement = document.getElementsByClassName('product_count');
+            
+
+            for(let i = 0 ; i < resultElement.length; i++){
+
+                let number = 1;
+                resultElement[i].children[0].addEventListener('click', ()=>{
+                    number--;
+                    if(number <= 1 ){
+
+                        number=1;
+                    }
+                    resultElement[i].children[1].innerText = number;
+                    console.log(number)
+                })
+
+                resultElement[i].children[2].addEventListener('click', ()=>{
+                    number++;
+                    if(number >=100){
+                        number=100;
+                    } 
+                    resultElement[i].children[1].innerText = number;
+                })
+            }   
+            
+;,;,
+
+
+
+
+
+
+
+
+
+
+
+
+            // let number = resultElement.innerText;
+            // if(type === 'plus'){
+            //     number = parseInt(number) + 1;
+            // }else if(type === 'minus') {
+            //     number = parseInt(number) - 1;
+            // }
+            // if(number <=1 ){
+            //     number=1;
+            // }
+            // if(number >=100){
+            //     number=100;
+            // }
+            // resultElement.innerText = number;
+        }
+        //상품 -+클릭시 개수 카운팅 종료
+
+    </script>
+    </body>
+</html>
